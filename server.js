@@ -12,6 +12,13 @@ router.get('/welcome', (req, res) => {
   res.send(`
     <link rel="stylesheet" href="/style.css">
     <h1>Welcome to MyMoodle</h1>
+    <p>Select a page:</p>
+    <ul>
+      <li><a href="/profile">Student Profile</a></li>
+      <li><a href="/courses">My Courses</a></li>
+      <li><a href="/grades">My Grades</a></li>
+      <li><a href="/student/123">Student Details</a></li>
+    </ul>
   `);
 });
 
