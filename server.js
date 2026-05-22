@@ -2,16 +2,22 @@ const net = require("net");
 const { parseRequest } = require("./src/parser");
 const { createRouter } = require("./src/router");
 const { createResponse } = require("./src/createResponse");
+const { serveStatic } = require("./src/static");
 
 const router = createRouter();
+const staticHandler = serveStatic('./public');
 
 // Define routes
 router.get('/welcome', (req, res) => {
-  res.send('<h1>Welcome to MyMoodle</h1>');
+  res.send(`
+    <link rel="stylesheet" href="/style.css">
+    <h1>Welcome to MyMoodle</h1>
+  `);
 });
 
 router.get('/profile', (req, res) => {
   res.send(`
+    <link rel="stylesheet" href="/style.css">
     <h1>Student Profile</h1>
     <p>Name: Rotem Sela</p>
     <p>Program: LL.B. in Law</p>
@@ -21,6 +27,7 @@ router.get('/profile', (req, res) => {
 
 router.get('/courses', (req, res) => {
   res.send(`
+    <link rel="stylesheet" href="/style.css">
     <h1>My Courses</h1>
     <ul>
       <li>Constitutional Law</li>
@@ -32,6 +39,7 @@ router.get('/courses', (req, res) => {
 
 router.get('/grades', (req, res) => {
   res.send(`
+    <link rel="stylesheet" href="/style.css">
     <h1>My Grades</h1>
     <ul>
       <li>Constitutional Law: 94</li>
@@ -43,6 +51,7 @@ router.get('/grades', (req, res) => {
 
 router.get('/student/:id', (req, res) => {
   res.send(`
+    <link rel="stylesheet" href="/style.css">
     <h1>Student Details</h1>
     <p>Student ID: ${req.params.id}</p>
   `);
@@ -65,9 +74,7 @@ const server = net.createServer((socket) => {
       req.params = matched.params;
       matched.handler(req, res);
     } else {
-      res.status(404).json({
-        error: 'Not Found'
-      });
+      staticHandler(req, socket);
     }
   });
 });
