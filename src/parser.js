@@ -2,7 +2,8 @@ function parseRequest(rawData) {
     const request = rawData.toString();
 
     // Split headers and body
-    const [headerSection, body = ""] = request.split("\r\n\r\n");
+    const [headerSection, ...bodyParts] = request.split("\r\n\r\n");
+    const body = bodyParts.join("\r\n\r\n");
     const lines = headerSection.split("\r\n");
 
     // Parse request line
@@ -28,7 +29,19 @@ function parseRequest(rawData) {
             headers[key] = value;
         }
     }
-    return { method, path, query, headers, body, version };
+    // Parse JSON body automatically
+    let parsedBody = body;
+    const contentType = headers['content-type'] || '';
+    
+    if (contentType.includes('application/json') && body) {
+        try {
+            parsedBody = JSON.parse(body);
+        } catch (e) {
+            parsedBody = body; 
+        }
+    }
+
+    return { method, path, query, headers, body: parsedBody, version };
 }
 
 module.exports = {
