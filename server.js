@@ -18,7 +18,7 @@ router
         <li><a href="/profile">Student Profile</a></li>
         <li><a href="/courses">My Courses</a></li>
         <li><a href="/grades">My Grades</a></li>
-        <li><a href="/student/123">Student Details</a></li>
+        <li><a href="/assignment/1">Assignments </a></li>
         <li><a href="/contact">Contact Us</a></li>
       </ul>
     `);
@@ -26,12 +26,18 @@ router
   .get('/profile', (req, res) => {
     res.send(`
       <link rel="stylesheet" href="/style.css">
-      <h1>Student Profile</h1>
-      <p>Name: Rotem Sela</p>
-      <p>Program: LL.B. in Law</p>
-      <p>Year: B</p>
+      <div class="profile-header">
+        <img src="https://www.israelhayom.co.il/wp-content/uploads/2026/02/10/10/WhatsApp-Image-2026-02-10-at-21.27.19-600x400.jpeg" alt="Student Photo" class="profile-img">
+        <h1>Student Profile</h1>
+      </div>
+      <ul>
+        <li><strong>Name:</strong> Rotem Sela</li>
+        <li><strong>Program:</strong> LL.B. in Law</li>
+        <li><strong>Year:</strong> B</li>
+      </ul>
     `);
   })
+  
   .get('/courses', (req, res) => {
     res.send(`
       <link rel="stylesheet" href="/style.css">
@@ -54,11 +60,14 @@ router
       </ul>
     `);
   })
-  .get('/student/:id', (req, res) => {
+  .get('/assignment/:id', (req, res) => {
     res.send(`
       <link rel="stylesheet" href="/style.css">
-      <h1>Student Details</h1>
-      <p>Student ID: ${req.params.id}</p>
+      <h1>Assignment Details</h1>
+      <ul>
+        <li><strong>Task Name:</strong> Assignment ${req.params.id}</li>
+        <li><strong>Status:</strong> In Progress</li>
+      </ul>
     `);
   });
 
@@ -68,14 +77,20 @@ router.route('/contact')
       <link rel="stylesheet" href="/style.css">
       <h1>Contact Us</h1>
       <form method="POST" action="/contact">
-        <button type="submit">Send Test Request</button>
+        <p>How can we help you today?</p>
+        <textarea name="message" rows="5" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #475569; background-color: #f8f9fa; margin-bottom: 15px; font-family: inherit; font-size: 16px; resize: vertical;" placeholder="Write your message here..." required></textarea>
+        <button type="submit">Send Message</button>
       </form>
     `);
   })
   .post((req, res) => {
-    res.status(201).json({
-      message: 'Contact request received'
-    });
+    res.send(`
+      <link rel="stylesheet" href="/style.css">
+      <h1>Message Sent Successfully! </h1>
+      <p>Thank you for contacting us. We have received your message and will get back to you within 24 hours.</p>
+      <br>
+      <a href="/welcome" style="display: inline-block; text-align: center; max-width: 200px;">Return to Home</a>
+    `);
   });
 
 const server = net.createServer((socket) => {
