@@ -38,13 +38,25 @@ function createRouter() {
         return null;
     }
 
-    return {
-        get: (path, handler) => addRoute('GET', path, handler),
-        post: (path, handler) => addRoute('POST', path, handler),
-        put: (path, handler) => addRoute('PUT', path, handler),
-        delete: (path, handler) => addRoute('DELETE', path, handler),
+    const routerParams = {
+        get: function (path, handler) { addRoute('GET', path, handler); return this; },
+        post: function (path, handler) { addRoute('POST', path, handler); return this; },
+        put: function (path, handler) { addRoute('PUT', path, handler); return this; },
+        delete: function (path, handler) { addRoute('DELETE', path, handler); return this; },
+
+        route: function (path) {
+            return {
+                get: function (handler) { addRoute('GET', path, handler); return this; },
+                post: function (handler) { addRoute('POST', path, handler); return this; },
+                put: function (handler) { addRoute('PUT', path, handler); return this; },
+                delete: function (handler) { addRoute('DELETE', path, handler); return this; }
+            };
+        },
+
         match
     };
+
+    return routerParams;
 }
 
 module.exports = {

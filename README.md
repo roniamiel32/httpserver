@@ -10,6 +10,7 @@ The idea was to better understand how HTTP works and build something similar to 
 - Static file serving (`style.css`)
 - JSON responses
 - 404 handling
+- Method chaining and Route grouping
 
 ## Routes
 ### GET Routes
@@ -19,9 +20,9 @@ The idea was to better understand how HTTP works and build something similar to 
 - `/grades` – student grades
 - `/student/:id` – dynamic student id route
 
-### POST Route
+### POST and GET Route
 
-- `/contact` – returns a confirmation message
+- `/contact` – The GET route returns an HTML contact form, and the POST route returns a confirmation message.
 
 For example:
 
@@ -54,6 +55,14 @@ The project also supports dynamic routes like:
 /student/123
 ```
 which returns the student id from the URL.
+
+I added two things to the router:
+
+1. **Method Chaining:** Instead of writing `router.get` on a new line every time, the methods return `this`, so you can just chain them together.
+
+2. **Route Grouping:** I added a `route(path)` function. This lets you write the path just once and attach different methods to it (like GET and POST). 
+
+For example: `router.route('/contact').get(...).post(...)`.
 
 ## How to Run
 Run the server:

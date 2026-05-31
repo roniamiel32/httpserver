@@ -3,7 +3,7 @@ const { buildResponse } = require("./response");
 function createResponse(socket) {
   let statusCode = 200;
   let statusText = 'OK';
-  const headers = {};
+  const headers = {'Connection': 'close' };
 
   return {
     status(code) {
